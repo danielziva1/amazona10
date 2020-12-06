@@ -21,7 +21,7 @@ import {
       default:
         return state;
     }
-    
+
   };
   
   
