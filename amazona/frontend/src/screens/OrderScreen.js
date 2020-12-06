@@ -61,7 +61,7 @@ export default function OrderScreen(props) {
           }
         }
       }
-    }, [dispatch, orderId, sdkReady, successPay, successDeliver, order]);
+    }, [dispatch, order, orderId, sdkReady, successPay, successDeliver]);
   
     const successPaymentHandler = (paymentResult) => {
         dispatch(payOrder(order, paymentResult));
@@ -83,7 +83,7 @@ export default function OrderScreen(props) {
           <ul>
             <li>
               <div className="card card-body">
-              <h2>Shippring</h2>
+                <h2>Shipping</h2>
                 <p>
                   <strong>Name:</strong> {order.shippingAddress.fullName} <br />
                   <strong>Address: </strong> {order.shippingAddress.address},

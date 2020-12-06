@@ -5,7 +5,6 @@ import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { ORDER_DELETE_RESET } from '../constants/orderConstants';
 
-
 export default function OrderListScreen(props) {
   const orderList = useSelector((state) => state.orderList);
   const { loading, error, orders } = orderList;
@@ -19,11 +18,11 @@ export default function OrderListScreen(props) {
   useEffect(() => {
     dispatch({ type: ORDER_DELETE_RESET });
     dispatch(listOrders());
-}, [dispatch, successDelete]);
+  }, [dispatch]);
   const deleteHandler = (order) => {
     if (window.confirm('Are you sure to delete?')) {
-        dispatch(deleteOrder(order._id));
-      }
+      dispatch(deleteOrder(order._id));
+    }
   };
   return (
     <div>
@@ -51,7 +50,7 @@ export default function OrderListScreen(props) {
             {orders.map((order) => (
               <tr key={order._id}>
                 <td>{order._id}</td>
-                <td>{order.user.name}</td>
+                <td>{order.name}</td>
                 <td>{order.createdAt.substring(0, 10)}</td>
                 <td>{order.totalPrice.toFixed(2)}</td>
                 <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
@@ -74,7 +73,6 @@ export default function OrderListScreen(props) {
                     type="button"
                     className="small"
                     onClick={() => deleteHandler(order)}
-
                   >
                     Delete
                   </button>
