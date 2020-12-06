@@ -61,7 +61,7 @@ export default function ProfileScreen() {
             )}
             {successUpdate && (
               <MessageBox variant="success">
-                Profile Updated Successfully
+                Profile Updated Successfully!
               </MessageBox>
             )}
             <div>
@@ -115,5 +115,6 @@ export default function ProfileScreen() {
         )}
       </form>
     </div>
+
   );
 }
