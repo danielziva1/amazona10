@@ -20,3 +20,6 @@ mongodb+srv://amazona:amazona@cluster0.wevc0.mongodb.net/amazona?retryWrites=tru
 
 
 mongodb+srv://amazona:amazona@cluster0.qypvo.mongodb.net/amazona?retryWrites=true&w=majority
+
+mongodb+srv://amazona:amazona@cluster0.kebe2.mongodb.net/amazona?retryWrites=true&w=majority
+mongodb+srv://amazona:amazona@cluster0.a0oel.mongodb.net/amazona?retryWrites=true&w=majority

@@ -47,7 +47,7 @@ function App() {
           <div>
          
           <Link className="brand" to="/">
-         just name
+        Print Market
            </Link>
           </div>
           <div>
