@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@react-google-maps/api": "^1.13.0",
     "react-router-dom": "^5.2.0"
   }
 }
