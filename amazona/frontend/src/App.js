@@ -4,6 +4,7 @@ import { BrowserRouter, Link, Route } from 'react-router-dom';
 import CartScreen from './screens/CartScreen';
 import HomeScreen from './screens/HomeScreen';
 import { signout } from './actions/userActions'
+
 import ProductScreen from './screens/ProductScreen';
 import SigninScreen from './screens/SigninScreen';
 import RegisterScreen from './screens/RegisterScreen';
@@ -156,7 +157,7 @@ function App() {
           ></AdminRoute>
              
            <Route
-            path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order"
+            path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order/pageNumber/:pageNumber"
             component={SearchScreen}
             exact
           ></Route>
@@ -176,6 +177,7 @@ function App() {
             path="/productlist/seller"
             component={ProductListScreen}
           ></SellerRoute>
+    
           <SellerRoute
             path="/orderlist/seller"
             component={OrderListScreen}

@@ -117,8 +117,9 @@ a.brand {
 }
 .row.center {
   justify-content: center;
+  margin: 0.6rem;
 }
-row.top {
+.row.top {
   align-items: flex-start;
 }
 .col-1 {
