@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Link, Route } from 'react-router-dom';
 import CartScreen from './screens/CartScreen';
 import HomeScreen from './screens/HomeScreen';
 import { signout } from './actions/userActions'
-
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import { listProductCategories } from './actions/productActions';
+import LoadingBox from './components/LoadingBox';
+import MessageBox from './components/MessageBox';
+import SellerScreen from './screens/SellerScreen';
 import ProductScreen from './screens/ProductScreen';
 import SigninScreen from './screens/SigninScreen';
 import RegisterScreen from './screens/RegisterScreen';
@@ -25,12 +29,17 @@ import SearchScreen from './screens/SearchScreen';
 import SearchBox from './components/SearchBox';
 import SellerRoute from './components/SellerRoute';
 import MapScreen from './screens/MapScreen';
+import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
+import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import ContactUsScreen from './screens/ContactUsScreen';
+import Button from '@material-ui/core/Button';
+
 
 
 
 function App() {
   const cart = useSelector((state) => state.cart);
- 
+  const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   const { cartItems } = cart;
   const userSignin = useSelector((state) => state.userSignin);
   const { userInfo } = userSignin;
@@ -41,26 +50,39 @@ function App() {
  
  
 
+  const productCategoryList = useSelector((state) => state.productCategoryList);
+  const {
+    loading: loadingCategories,
+    error: errorCategories,
+    categories,
+  } = productCategoryList;
+  useEffect(() => {
+    dispatch(listProductCategories());
+  }, [dispatch]);
   return (
     <BrowserRouter>
-      <div className="grid-container">
+ 
+      <div className="grid-container">  
         <header className="row">
           <div>
+            
+          <button
+              type="button"
+              className="open-sidebar"
+              onClick={() => setSidebarIsOpen(true)}
+            >
+              <i className="fa fa-bars"></i>
+            </button>
+           
+          </div>
+          
+       
          
-          <Link className="brand" to="/">
-        Print Market
-           </Link>
-          </div>
           <div>
-            <Route
-              render={({ history }) => (
-                <SearchBox history={history}></SearchBox>
-              )}
-            ></Route>
-          </div>
-          <div>
+            
           <Link to="/cart">
-              Cart
+          <ShoppingCartIcon fontSize ='large' >  
+              </ShoppingCartIcon>
               {cartItems.length > 0 && (
                 <span className="badge">{cartItems.length}</span>
               )}
@@ -72,32 +94,36 @@ function App() {
                 </Link>
                 <ul className="dropdown-content">
                 <li>
-                    <Link to="/profile">User Profile</Link>
+                    <Link to="/profile">פרופיל משתמש</Link>
                   </li>
                 <li>
-                    <Link to="/orderhistory">Order History</Link>
+                    <Link to="/orderhistory"> הזמנות</Link>
                   </li>
                   <li>
                     <Link to="#signout" onClick={signoutHandler}>
-                      Sign Out
+                     יציאה
                     </Link>
                   </li>
                 </ul>
               </div>
             ) : (
-              <Link to="/signin">Sign In</Link>
+              <Link to="/signin"> 
+                <PersonOutlineIcon   fontSize ='large'></PersonOutlineIcon>
+                
+                </Link>
+             
             )}
                {userInfo && userInfo.isSeller && (
               <div className="dropdown">
                 <Link to="#admin">
-                  Seller <i className="fa fa-caret-down"></i>
+                  מוכר <i className="fa fa-caret-down"></i>
                 </Link>
                 <ul className="dropdown-content">
                   <li>
-                    <Link to="/productlist/seller">Products</Link>
+                    <Link to="/productlist/seller">מוצרים</Link>
                   </li>
                   <li>
-                    <Link to="/orderlist/seller">Orders</Link>
+                    <Link >הזמנות</Link>
                   </li>
                 </ul>
               </div>
@@ -105,28 +131,89 @@ function App() {
             {userInfo && userInfo.isAdmin && (
               <div className="dropdown">
                 <Link to="#admin">
-                  Admin <i className="fa fa-caret-down"></i>
+                  מנהל <i className="fa fa-caret-down"></i>
                 </Link>
                 <ul className="dropdown-content">
                   <li>
-                    <Link to="/dashboard">Dashboard</Link>
+                  
                   </li>
                   <li>
-                    <Link to="/productlist">Products</Link>
+                    <Link to="/productlist">מוצרים</Link>
                   </li>
                   <li>
-                    <Link to="/orderlist">Orders</Link>
+                    <Link to="/orderlist">הזמנות</Link>
                   </li>
                   <li>
-                    <Link to="/userlist">Users</Link>
+                    <Link to="/userlist">משתמשים</Link>
                   </li>
                 </ul>
+                
               </div>
             )}
           </div>
+          <div>
+            <Route
+              render={({ history }) => (
+                <SearchBox history={history}></SearchBox>
+              )}
+            ></Route>
+          </div>
+             
+          <Link className="brand"   to="/contactus">
+           <WhatsAppIcon  fontSize ='large' ></WhatsAppIcon>
+           
+            </Link>
+            <div></div>  
+            <div></div>
+            <div></div>  
+            <div></div> 
+            <div></div>  
+            <div></div>
+            <div></div>  
+            <div></div> 
+            
+          <Link className="brand" to="/">
+          קנבס אונליין
+            </Link>
+            
     </header>
+    
+    <aside className={sidebarIsOpen ? 'open' : ''}>
+          <ul className="categories">
+            <li>
+              <strong>תמונות לפי קטגוריה</strong>
+              <button
+                onClick={() => setSidebarIsOpen(false)}
+                className="close-sidebar"
+                type="button"
+              >
+                <i className="fa fa-close"></i>
+              </button>
+            </li>
+            {loadingCategories ? (
+              <LoadingBox></LoadingBox>
+            ) : errorCategories ? (
+              <MessageBox variant="danger">{errorCategories}</MessageBox>
+            ) : (
+              categories.map((c) => (
+                <li key={c}>
+                  <Button   size="large" >
+                  <Link className="toto"
+                    to={`/search/category/${c}`}
+                    onClick={() => setSidebarIsOpen(false)}
+                  >
+                    {c}
+                  </Link>
+                  </Button>
+                </li>
+              ))
+            )}
+          </ul>
+        </aside>
 
     <main>
+    <Route path="/contactus" component={ContactUsScreen}></Route>
+    <Route path="/seller/:id" component={SellerScreen}></Route>
     <Route path="/cart/:id?" component={CartScreen}></Route>
     <Route path="/product/:id" component={ProductScreen} exact></Route>
     <Route
@@ -134,6 +221,7 @@ function App() {
             component={ProductEditScreen}
             exact
           ></Route>
+          
       <Route path="/signin" component={SigninScreen}></Route>
       <Route path="/register" component={RegisterScreen}></Route>
       <Route path="/shipping" component={ShippingAddressScreen}></Route>
@@ -141,10 +229,12 @@ function App() {
       <Route path="/placeorder" component={PlaceOrderScreen}></Route>
       <Route path="/orderhistory" component={OrderHistoryScreen}></Route>
       <Route path="/order/:id" component={OrderScreen}></Route>
-      <AdminRoute
-            path="/productlist"
+      
+     
+           <AdminRoute
+            path="/productlist/pageNumber/:pageNumber"
             component={ProductListScreen}
-            
+            exact
           ></AdminRoute>
            <AdminRoute
             path="/orderlist"
@@ -161,7 +251,16 @@ function App() {
             component={SearchScreen}
             exact
           ></Route>
-         
+          <Route
+            path="/search/category/:category"
+            component={SearchScreen}
+            exact
+          ></Route>
+          <Route
+            path="/search/category/:category/name/:name"
+            component={SearchScreen}
+            exact
+          ></Route>
       <PrivateRoute
             path="/profile"
             component={ProfileScreen}
@@ -176,6 +275,7 @@ function App() {
            <SellerRoute
             path="/productlist/seller"
             component={ProductListScreen}
+            
           ></SellerRoute>
     
           <SellerRoute
@@ -183,9 +283,19 @@ function App() {
             component={OrderListScreen}
           ></SellerRoute>
       <Route path="/" component={HomeScreen} exact></Route>
+     
     </main>
-    <footer className="row center">Daniel Ziva@</footer>
+    <footer className="row center">
+      <div >
+    שירות לקוחות
+נשמח לסייע ולהעניק מענה לכל שאלה:
+ימים א’-ה’ בין 09:00 – 17:00
+טלפון: 00533313049
+<Link>hotprint@gmail.com</Link>
+</div>
+</footer>
   </div>
+  
 </BrowserRouter>
 );
 }
